@@ -40,7 +40,7 @@ public class HomeController {
 	public String test(Model model){
 		String greetings = "Welcome to Spring MVC";
 		model.addAttribute("greetings", greetings);
-		return "template/test";
+		return "test";
 	}
 	
 }

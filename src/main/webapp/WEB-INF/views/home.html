@@ -3,8 +3,8 @@
 <body>
 <div class="container" th:fragment="content">
     <!-- /* Handle the flash message */-->
-        Welcome to the Spring MVC Quickstart application!
-    
+        Welcome to the Spring MVC application!
+    <p th:text="${serverTime}">The time on the server is [serverTime].</p>
 </div>
 <div th:replace="fragments/footerTag :: footerTag"></div>
 </body>
