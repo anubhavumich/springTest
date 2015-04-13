@@ -3,7 +3,8 @@
 <body>
 <div th:fragment="footerTag">
 	this is the footer.
-	<script src="../../../resources/javascripts/bootstrap.js" ></script>
+	<script src="/resources/javascripts/jquery-2.1.3.js" th:src="@{/resources/javascripts/jquery-2.1.3.js}" ></script>
+	<script src="/resources/javascripts/bootstrap.js" th:src="@{/resources/javascripts/bootstrap.js}" ></script>
 </div>
 </body>
 </html>
