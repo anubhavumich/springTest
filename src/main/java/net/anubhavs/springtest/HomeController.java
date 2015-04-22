@@ -10,6 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import net.anubhavs.springtest.model.*;
 
 /**
  * Handles requests for the application home page.
@@ -36,11 +39,23 @@ public class HomeController {
 		return "home";
 	}
 	
+	/*
+	 * Test Page 
+	 * */
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test(Model model){
 		String greetings = "Welcome to Spring MVC";
 		model.addAttribute("greetings", greetings);
 		return "test";
 	}
+	
+	/*
+	 * Returns JSON data for ajax based calls
+	 * */
+	@RequestMapping(value = "/getSearchModes")
+	public @ResponseBody SearchModes getSearchModes(){
+		SearchModes modes = new SearchModes(19008, 1487, 1598);
+		return modes;
+	} 
 	
 }

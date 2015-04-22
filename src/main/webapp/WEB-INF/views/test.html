@@ -1,11 +1,103 @@
 <html xmlns:th="http://www.thymeleaf.org">
  <head th:replace="fragments/headerTag :: headerTag"></head>
 <body>
-<div class="container" th:fragment="content">
+<div class="fluid-container" th:fragment="content">
     <!-- /* Handle the flash message */-->
-        Welcome to the Spring MVC Quickstart application!
-    
+    <div class="topDiv container">
+    	<img src="/resources/images/logo_proquest.png" th:src="@{/resources/images/logo_proquest.png}"/>
+    </div>
+</div>
+<div class="container contentDiv">
+	<div>Welcome to the Test Analytics application!</div>
+	<div class="row">
+		<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+			<div class="with-3d-shadow with-transitions">
+				<svg id="test1" class="mypiechart"></svg>
+				<svg id="test2" class="mypiechart"></svg>
+			</div>
+		</div>
+	
+		<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+			<input id="initializePie" type="button" class="btn btn-default" value="GenerateChart"/>
+		</div>
+	</div>
+	
 </div>
 <div th:replace="fragments/footerTag :: footerTag"></div>
+<div>
+
+	<script src="/resources/javascripts/d3.min.js" th:src="@{/resources/javascripts/d3.min.js}" ></script>
+	<script src="/resources/javascripts/nv.d3.js" th:src="@{/resources/javascripts/nv.d3.js}" ></script>
+	<script src="/resources/javascripts/stream_layers.js" th:src="@{/resources/javascripts/stream_layers.js}" ></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+
+     		var height = 350;
+     	    var width = 350;
+var pieData = null;
+var testdata = [
+                {key: "Basic", y: 0},
+                {key: "Advanced", y: 0},
+                {key: "Command", y: 0}
+            ];
+$(document).ready(function(){
+	function createGraph(testData2){
+		debugger;
+		nv.addGraph(function() {
+		     var chart = nv.models.pieChart()
+		         .x(function(d) { return d.key })
+		         .y(function(d) { return d.y })
+		         .width(width)
+		         .height(height);
+
+		     d3.select("#test1")
+		         .datum(testData2)
+		         .transition().duration(1200)
+		         .attr('width', width)
+		         .attr('height', height)
+		         .call(chart);
+
+		     // update chart data values randomly
+		     //setInterval(function() {
+		       //  testdata2[0].y = Math.floor(Math.random() * 10);
+		       //  testdata2[1].y = Math.floor(Math.random() * 10);
+		       //  chart.update();
+		     //}, 4000);
+
+		     return chart;
+		 });
+
+	}
+
+      	 
+      	 
+     	$('#initializePie').click(function(){
+     		
+     		$.ajax({
+             	type:'GET',
+             	url:'/springtest/getSearchModes'
+             }).done(function(data){
+            	 
+             	if (console && console.log){
+             		console.log('AjaxData: ', data);
+             		pieData = data;
+             		
+             		
+             		testdata[0].y = pieData.countBasic;
+             		testdata[1].y = pieData.countAdvanced
+             		testdata[2].y = pieData.countCommandLine;
+             		createGraph(testdata);
+             	};
+             });
+     		     		
+     	 });	 
+     	
+});
+
+
+
+     /*]]>*/
+</script>
+</div>
 </body>
 </html>

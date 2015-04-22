@@ -52,5 +52,4 @@
 	<context:component-scan base-package="net.anubhavs.springtest" />
 	
 	
-	
 </beans:beans>
