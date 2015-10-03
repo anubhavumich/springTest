@@ -7,21 +7,30 @@
     	<img src="/resources/images/logo_proquest.png" th:src="@{/resources/images/logo_proquest.png}"/>
     </div>
 </div>
-<div class="container contentDiv">
-	<div>Welcome to the Test Analytics application!</div>
-	<div class="row">
-		<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-			<div class="with-3d-shadow with-transitions">
-				<svg id="test1" class="mypiechart"></svg>
-				<svg id="test2" class="mypiechart"></svg>
+<div class="contentDiv">
+	<div class="rightPanel">
+		<div class="pageHeading">Performance</div>
+		<div class="specifics row">
+			<div class="col-lg-4 col-md-4 col-sm-6 avgttr"><span class="specificLabel">Avg TTR: </span><span class="specificValue"></span></div>
+			<div class="col-lg-4 col-md-4 col-sm-6 minttr"><span class="specificLabel">Min TTR: </span><span class="specificValue"></span></div>
+			<div class="col-lg-4 col-md-4 col-sm-6 maxttr"><span class="specificLabel">Max TTR: 	</span><span class="specificValue"></span></div>
+		</div>
+			<div id="chart" style="height:400px;width:600px;">
+					<svg></svg>
+			</div>
+		<div class="row">
+			<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+				<div class="with-3d-shadow with-transitions">
+					<svg id="test1" class="mypiechart"></svg>
+					<svg id="test2" class="mypiechart"></svg>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+				<input id="initializePie" type="button" class="btn btn-default" value="GenerateChart"/>
 			</div>
 		</div>
-	
-		<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-			<input id="initializePie" type="button" class="btn btn-default" value="GenerateChart"/>
-		</div>
-	</div>
-	
+	</div>	
+	<div class="leftPanel"></div>
 </div>
 <div th:replace="fragments/footerTag :: footerTag"></div>
 <div>
@@ -40,12 +49,75 @@ var testdata = [
                 {key: "Advanced", y: 0},
                 {key: "Command", y: 0}
             ];
+
 $(document).ready(function(){
-	function createGraph(testData2){
+	testdata3 = [
+		            {
+		               key: "TTR",
+		               values: [
+		                 { 
+		                   "label" : "A" ,
+		                   "value" : -29.765957771107
+		                 } , 
+		                 { 
+		                   "label" : "B" , 
+		                   "value" : 0
+		                 } , 
+		                 { 
+		                   "label" : "C" , 
+		                   "value" : 32.807804682612
+		                 } , 
+		                 { 
+		                   "label" : "D" , 
+		                   "value" : 196.45946739256
+		                 } , 
+		                 { 
+		                   "label" : "E" ,
+		                   "value" : 0.19434030906893
+		                 } , 
+		                 { 
+		                   "label" : "F" , 
+		                   "value" : -98.079782601442
+		                 } , 
+		                 { 
+		                   "label" : "G" , 
+		                   "value" : -13.925743130903
+		                 } , 
+		                 { 
+		                   "label" : "H" , 
+		                   "value" : -5.1387322875705
+		                 }
+		               ]
+		             }
+		           ];
+
+		
+	function createBarGraph(){
+				nv.addGraph(function(){
+			var chart = nv.models.discreteBarChart()
+		    .x(function(d) { return d.MarketType })
+		    .y(function(d) { return d.MeanMarketTTR })
+		    .staggerLabels(true)
+		    .tooltips(false)
+		    .showValues(true)
+
+		  d3.select('#chart svg')
+		    .datum(testdata3)
+		    .transition().duration(500)
+		    .call(chart)
+		    ;
+
+		  nv.utils.windowResize(chart.update);
+
+		  return chart;
+		})
+	}
+	
+	/*function createGraph(testData2){
 		debugger;
 		nv.addGraph(function() {
 		     var chart = nv.models.pieChart()
-		         .x(function(d) { return d.key })
+		         .x(function(d) { console.log(d); return d.key })
 		         .y(function(d) { return d.y })
 		         .width(width)
 		         .height(height);
@@ -67,13 +139,13 @@ $(document).ready(function(){
 		     return chart;
 		 });
 
-	}
+	}*/
 
       	 
       	 
      	$('#initializePie').click(function(){
      		
-     		$.ajax({
+     		/*$.ajax({
              	type:'GET',
              	url:'/springtest/getSearchModes'
              }).done(function(data){
@@ -88,9 +160,42 @@ $(document).ready(function(){
              		testdata[2].y = pieData.countCommandLine;
              		createGraph(testdata);
              	};
+             });*/
+     		$.ajax({
+             	type:'GET',
+             	url:'/springtest/getTTRModes'
+             }).done(function(data){
+            	 
+             	if (console && console.log){
+             		console.log('AjaxData: ', data);
+             		testdata3[0].values = data;
+             		var avg=0;
+             		var sum = 0;
+             		var max = 0;
+             		var min=0;
+             		var count = 0;
+             		for(i=0;i<data.length;i++){
+             			if (data[i].MinTTR<min || i==0){
+             				min = data[i].MinTTR;
+             			}
+             			if (data[i].MaxTTR>max){
+             				max = data[i].MaxTTR;
+             			}
+             			sum = sum + data[i].TTRSumPerAccount;
+             			count = count + data[i].AccountCount;
+             		}
+             		avg = sum/count;
+             		$('.specifics .avgttr .specificValue').text((avg).toFixed(2));
+             		$('.specifics .minttr .specificValue').text((min).toFixed(2));
+             		$('.specifics .maxttr .specificValue').text((max).toFixed(2));
+             		createBarGraph()
+             		
+             	};
              });
      		     		
-     	 });	 
+     	 });
+     
+     	
      	
 });
 

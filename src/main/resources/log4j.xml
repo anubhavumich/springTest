@@ -9,10 +9,19 @@
 			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
 		</layout>
 	</appender>
+	<appender name="default.file" class="org.apache.log4j.FileAppender">
+        <param name="file" value="/log/mylogfile.log" />
+        <param name="append" value="false" />
+        <param name="threshold" value="debug" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n" />
+        </layout>
+    </appender>
 	
 	<!-- Application Loggers -->
 	<logger name="net.anubhavs.springtest">
 		<level value="info" />
+		<appender-ref ref="default.file"/>
 	</logger>
 	
 	<!-- 3rdparty Loggers -->

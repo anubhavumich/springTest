@@ -8025,11 +8025,16 @@ button.close {
   }
 }
 /* line 5, ../sass/styles.scss */
+html, body {
+  height: 100%;
+}
+
+/* line 9, ../sass/styles.scss */
 text {
   font: 12px sans-serif;
 }
 
-/* line 9, ../sass/styles.scss */
+/* line 13, ../sass/styles.scss */
 svg {
   display: block;
   float: left;
@@ -8037,17 +8042,69 @@ svg {
   width: 350px;
 }
 
-/* line 16, ../sass/styles.scss */
+/* line 20, ../sass/styles.scss */
 .topDiv {
   top: 0;
   left: 0;
   background-color: black;
   width: 100%;
-  height: 120px;
+  height: 60px;
 }
-/* line 23, ../sass/styles.scss */
+/* line 27, ../sass/styles.scss */
 .topDiv img {
-  height: 60%;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  height: 40px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* line 34, ../sass/styles.scss */
+.contentDiv {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+/* line 40, ../sass/styles.scss */
+.contentDiv .leftPanel {
+  flex: 0 0 200px;
+  background-color: #FFF;
+  border-right: 1px solid #EEE;
+}
+/* line 46, ../sass/styles.scss */
+.contentDiv .rightPanel {
+  flex: 1 1 auto;
+  background-color: #FFF;
+  order: 2;
+}
+/* line 51, ../sass/styles.scss */
+.contentDiv .rightPanel .pageHeading {
+  font-weight: bold;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 1.6em;
+}
+
+/* line 62, ../sass/styles.scss */
+.specifics {
+  padding: 5px;
+}
+/* line 65, ../sass/styles.scss */
+.specifics .specificLabel {
+  font-weight: bold;
+  font-size: 0.8em;
+  padding-left: 5px;
+}
+/* line 71, ../sass/styles.scss */
+.specifics .specificValue {
+  font-size: 1.5em;
+  padding-left: 5px;
+}
+
+/* line 77, ../sass/styles.scss */
+.footer {
+  width: 100%;
+  background-color: black;
+  color: white;
 }
